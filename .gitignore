@@ -1,0 +1,9 @@
+tmp
+.vscode
+*.aux
+*.fdb_latexmk
+*.fls
+*.out
+*.log
+*.gz
+src/theory/*.pdf
