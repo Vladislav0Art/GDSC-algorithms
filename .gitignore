@@ -6,4 +6,5 @@ tmp
 *.out
 *.log
 *.gz
+*.toc
 src/theory/*.pdf

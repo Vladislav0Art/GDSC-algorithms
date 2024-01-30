@@ -1,0 +1,286 @@
+\documentclass[a4paper,12pt]{article}
+% \usepackage[T2A]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{xspace}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+
+\pagestyle{plain}
+\usepackage[
+  left=0.50in,
+  right=0.50in,
+  top=0.8in,
+  bottom=0.7in,
+  headheight=0.8in]{geometry}
+\pagenumbering{gobble}
+
+\setlength{\parskip}{0.15cm}
+
+\usepackage{indentfirst}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+\usepackage{paralist}
+\usepackage{cancel}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{mdframed}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage[super]{cite}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+
+\newcommand\Section[2]{
+  \newpage % new page
+  \stepcounter{section}
+  \bigskip
+  \phantomsection
+  \addcontentsline{toc}{section}{\arabic{section}. #1}
+  \begin{center}
+    {\huge \bf \arabic{section}. #1}\\
+  \end{center}
+  \bigskip
+  \gdef\SectionName{#1}
+  \gdef\AuthorName{#2}
+
+  \lhead{\ShortCourseName}
+  \chead{}
+  \rhead{\SectionName}
+
+  \cfoot{
+%    \topskip0pt\vspace*{\fill}
+    \thepage~from~\pageref*{LastPage}
+%    \vspace*{\fill}
+  }
+
+  \renewcommand{\headrulewidth}{0.15 mm}
+
+  \ifx\LaconicFooter\undefined
+  \lfoot{
+%    \topskip0pt\vspace*{\fill}
+    Chapter \texttt{\#\arabic{section}}
+%    \vspace*{\fill}
+  }
+  \rfoot{
+%    \topskip0pt\vspace*{\fill}
+    Author: \AuthorName
+%    \vspace*{\fill}
+  }
+  \renewcommand{\footrulewidth}{0.15 mm}
+  \fi
+}
+
+
+
+\newcommand\Subsection[1]{
+  \subsection{#1}
+}
+
+\newcommand\Subsubsection[1]{
+  \subsubsection{#1}
+}
+
+\newcommand\slashnl{~\\*[-26pt]}
+\newcommand\slashn{~\\*[-22pt]}
+\newcommand\slashns{~\\*[-18pt]}
+\newcommand\slashnss{~\\*[-14pt]}
+\newcommand\slashnsss{~\\*[-10pt]}
+
+\newcommand{\makegood}{
+  \ifx\ShortCourseName\undefined
+  \gdef\ShortCourseName{\CourseName}
+  \fi
+
+
+  \ifx\NoTitlePage\undefined
+
+  \ifx\CustomTitle\undefined
+    \title{\CourseName}
+    \maketitle
+  \else
+    \pagestyle{empty}
+    \CustomTitle
+  \fi
+  \tableofcontents
+  \pagebreak
+  \fi
+
+  \pagestyle{fancy}
+  \pagenumbering{arabic}
+  \setcounter{page}{1}
+
+  \lhead{\ShortCourseName}
+
+  \ifdefined\ENABLEDMATH
+  \renewcommand\proofname{\em\textbf{Proof}}
+  \else
+  \fi
+}
+
+
+\newcommand{\TODO}[1][]{
+  \vspace{0.2em}
+  \textbf{{\bf\color{red} TODO:} #1}
+  \vspace{0.2em}
+}
+
+
+\newcommand\enablemath{
+  \usepackage{amsmath,amsthm,amssymb,mathtext}
+  \usepackage{thmtools}
+  \usepackage{tikz}
+
+  \newcommand\R{\ensuremath{\mathbb{R}}\xspace}
+  \newcommand\Q{\ensuremath{\mathbb{Q}}\xspace}
+  \newcommand\N{\ensuremath{\mathbb{N}}\xspace}
+  \newcommand\Z{\ensuremath{\mathbb{Z}}\xspace}
+  \newcommand\CC{\ensuremath{\mathbb{C}}\xspace}
+
+  \DeclareRobustCommand{\divby}{%
+    \mathrel{\vbox{\baselineskip.65ex\lineskiplimit0pt\hbox{.}\hbox{.}\hbox{.}}}%
+  }
+  \newcommand\notmid{\centernot\mid}
+
+  \let\Im\relax
+  \let\Re\relax
+  \DeclareMathOperator\Im{Im}
+  \DeclareMathOperator\Re{Re}
+  \DeclareMathOperator\res{res}
+
+  \DeclareMathOperator*{\lcm}{lcm}
+  \newcommand\vphi{\varphi}
+
+  \usepackage{
+    nameref,
+    hyperref,
+    cleveref}
+
+  \ifx\ThmSpacing\undefined
+  \def\ThmSpacing{9pt}
+  \fi
+
+  \ifx\ThmNamespace\undefined
+  \def\ThmNamespace{section}
+  \fi
+
+  \declaretheoremstyle[
+    spaceabove=\ThmSpacing, spacebelow=\ThmSpacing,
+    headfont=\slshape\bfseries,
+    bodyfont=\normalfont,
+    postheadspace=0.5em,
+  ]{thmstyle_def}
+
+  \declaretheoremstyle[
+    spaceabove=\ThmSpacing, spacebelow=\ThmSpacing,
+    postheadspace=0.5em,
+  ]{thmstyle_thm}
+
+  \declaretheoremstyle[
+    spaceabove=\ThmSpacing, spacebelow=\ThmSpacing,
+    headfont=\itshape\bfseries,
+    notefont=\itshape\bfseries, notebraces={}{},
+    bodyfont=\normalfont,
+    postheadspace=0.5em,
+  ]{thmstyle_cons}
+
+  \declaretheoremstyle[
+    spaceabove=\ThmSpacing, spacebelow=\ThmSpacing,
+    headfont=\bfseries,
+    notefont=\bfseries, notebraces={}{},
+    bodyfont=\normalfont,
+    postheadspace=0.5em,
+  ]{thmstyle_examp}
+
+  \declaretheoremstyle[
+    spaceabove=\ThmSpacing, spacebelow=\ThmSpacing,
+    headfont=\ttfamily\itshape,
+    notefont=\ttfamily\itshape, notebraces={}{},
+    bodyfont=\normalfont,
+    postheadspace=0.5em,
+  ]{thmstyle_remark}
+
+  \declaretheorem[numberwithin=\ThmNamespace, name=Theorem, style=thmstyle_thm]{theorem}
+  \declaretheorem[numberwithin=\ThmNamespace, name=Definition, style=thmstyle_def]{definition}
+  \declaretheorem[sibling=theorem, name=statement, style=thmstyle_thm]{statement}
+  \declaretheorem[numbered=no, name=Note, style=thmstyle_remark]{remark}
+  \declaretheorem[numbered=no, name=Lemma, style=thmstyle_thm]{lemma}
+  \declaretheorem[numbered=no, name=Implication, style=thmstyle_cons]{consequence}
+  \declaretheorem[numbered=no, name=Example, style=thmstyle_examp]{example}
+  \declaretheorem[numbered=no, name=Properties, style=thmstyle_cons]{properties}
+  \declaretheorem[numbered=no, name=Properties, style=thmstyle_cons]{property}
+
+  \newcommand\thmslashn{\slashn}
+
+  % Examples:
+  % \begin{theorem} theorem-statement \end{theorem}
+  %
+  % Use theorem name in a title:
+  % \begin{definition}[My name] the definition \end{definition}
+  %
+  % Create a mark for later use of a link:
+  % \begin{statement}\label{stm:identifier} the statement \end{statement}
+  %
+  % \begin{statement}\label{otherlabel}
+  %   \hyperref[stm:identifier]{Theorem}.
+  %   \ref{stm:identifier}
+  %   \autoref{stm:identifier} ‘‘\nameref{stm:identifier}’’,
+  % \end{statement}
+
+  \newcommand\eps{\varepsilon}
+  \renewcommand\le{\leqslant}
+  \renewcommand\ge{\geqslant}
+  \newcommand\empysetold{\emptyset}
+  \renewcommand\emptyset{\varnothing}
+
+  \newcommand\ENABLEDMATH{YES}
+}
+
+\newcommand\enablecode{
+  \usepackage{listings}
+  \lstset{
+    belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    frame=L,
+    xleftmargin=\parindent,
+    showstringspaces=false,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\bfseries\color{blue},
+    commentstyle=\itshape\color{Maroon},
+    identifierstyle=\color{black},
+    stringstyle=\color{orange},
+    numbers=left
+  }
+
+  \lstdefinestyle{supercpp} {
+    language=C++,
+    deletekeywords={int, long, char, short, unsigned, signed,
+      uint64\_t, int64\_t, uint32\_t, int32\_t, uint16\_t, int16\_t, uint8\_t, int8\_t,
+      size\_t, ptrdiff\_t, \#include,\#define,\#if,\#ifdef,\#ifndef},
+    classoffset=1,
+    morekeywords={vector,stack,queue,set,map,unordered\_set,unordered\_map,deque,array,string,multiset,multimap,
+      int, long, char, short, unsigned, signed,
+      uint64\_t, int64\_t, uint32\_t, int32\_t, uint16\_t, int16\_t, uint8\_t, int8\_t,
+      size\_t, ptrdiff\_t
+    },
+    keywordstyle=\bfseries\color{green!40!black},
+    classoffset=0,
+    classoffset=2,
+    morekeywords={std},
+    keywordstyle=\bfseries\color{ForestGreen},
+    classoffset=0,
+    more comment=[l][\bfseries\color{purple!99!black}]{\#}
+  }
+}
