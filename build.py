@@ -205,8 +205,8 @@ def build_target(target, config, util, hashes_new):
             # we need to run lualatex twice to get table of contents setup'ed correctly.
             for i in range(1 if config['rush'] else 2):
                 try:
-                    # proc = subprocess.Popen(['lualatex', '-interaction=nonstopmode', '-halt-on-error', lconf['main'] + '.tex'], stdout=subprocess.DEVNULL, cwd=tmpdir)
-                    proc = subprocess.Popen(['pdflatex', '--max-print-line=10000', '-synctex=1', '-interaction=nonstopmode', '-halt-on-error', '-file-line-error', '-recorder', lconf['main'] + '.tex'], stdout=subprocess.DEVNULL, cwd=tmpdir)
+                    proc = subprocess.Popen(['lualatex', '-interaction=nonstopmode', '-halt-on-error', lconf['main'] + '.tex'], stdout=subprocess.DEVNULL, cwd=tmpdir)
+                    # proc = subprocess.Popen(['pdflatex', '--max-print-line=10000', '-synctex=1', '-interaction=nonstopmode', '-halt-on-error', '-file-line-error', '-recorder', lconf['main'] + '.tex'], stdout=subprocess.DEVNULL, cwd=tmpdir)
                     proc.wait()
                     if proc.returncode != 0:
                         nonzero = True
