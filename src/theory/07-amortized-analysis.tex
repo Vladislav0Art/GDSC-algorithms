@@ -1,0 +1,89 @@
+\Subsection{Definition and general perception of the concept}
+
+Remember that we were talking about \textbf{std::vector} we said that its \textbf{push\_back} operation works for an average of $\Theta(1)$. It was due to presence of 2 \textbf{distinct states}:
+
+1. vector has enough capacity to fit the next pushed element.
+
+2. vector does not have enough capacity and has to make itself twice bigger (i.e. reallocating a memeory buffer of size $2\cdot N$).
+
+There are definetely more complicated senarios where number of such \textit{interesting states} is much greater, thus we need a unified approach of how to define this average, or \textbf{amortized}, time for an operation.
+
+\begin{definition}
+    \textbf{The amortized analysis}
+
+    The amortized analysis is an approach that allows to determine an average running time (time complexity) of operations $o_1$, $o_2$, ..., $o_k$ in a sequence $S$ over that sequence $S$.
+
+\end{definition}
+
+There are several methods that are referred to as amortized analysis (\href{https://en.wikipedia.org/wiki/Amortized_analysis}{wiki}). We are going to discuss \textbf{Potential method}.
+
+\Subsection{Amortized analysis: Potential method}
+
+\begin{definition}
+    \textbf{Potential method}
+
+    Introduce a \textbf{potential function} called $\Phi: \mathbf{S} \to \mathbf{R_{0}^{+}}$ where $\mathbf{S}$ is a set of states of the considered data structure and $R_{0}^{+} = [0, +\inf)$, i.e. the potential function maps states of the data structure to some non-negavite values. As an important edge case for the initial state $S_{init}$: $\Phi(S_{init}) = 0$.
+
+    Let $o_i$ be an individual operation within some sequence of operations named $Q$. Let $S_{i-1}$ be the state of the considered data structure before the execution of the operation $o_i$ and $S_{i}$ be the state after the execution of $o_i$. Let $\Phi$ be a chosen potential function, then the amortized time for an operation $o_i$ is defined as follows:
+
+    $ T_{a}(o_i) = T_{r}(o_i) + \left (\Phi(S_{i}) - \Phi(S_{i-1}) \right ) $ where:
+
+    1. $T_{a}(o)$ - amortized time of the operation.
+
+    2. $T_{r}(o)$ - real/actual time spent on the operation.
+\end{definition}
+
+\begin{theorem}
+    \textbf{Potential method yields an upper bound}
+
+    The amortized time of a sequence of operations always yields an \textbf{upper bound} of the the real/actual time for the considered sequence of operations, i.e.:
+
+    $\forall O = o_1, o_2, ..., o_n$ be a sequence of operations, define:
+
+    1. $T_{a}(O) = \Sigma_{i=1}^{n} T_{a}(o_i)$ - amortized time of the sequence $O$
+
+    2. $T_{r}(O) = \Sigma_{i=1}^{n} T_r(o_i)$ - real time of the sequence $O$
+
+    Then: $T_r(O) \leq T_a(O)$
+
+\end{theorem}
+
+\begin{proof}
+
+    As definition for $T_a(O)$ suggests:
+
+    $$ T_{a}(O) = \Sigma_{i=1}^{n} (T_{r}(o_i) + \Phi(S_i) - \Phi(S_{i-1})) = T_{r}(O) + \Phi(S_n) - \Phi(S_0) $$
+    $$ T_{a}(O) = T_{r}(O) + \underbrace{\Phi(S_n)}_{\cdot \geq 0} - \underbrace{\Phi(S_0)}_{\cdot = 0} \geq T_{r}(O) $$
+
+\end{proof}
+
+\underline{Note}: Generally speaking, $\Phi$ could be any function that satisfies the constraints but the idea is to find such $\Phi$ that would represent the closest upper bound of the real/actual time for the considered sequence of operations.
+
+\begin{example}
+    \textbf{Amortized analysis for std::vector::push\_back operation}
+
+    1. Analyse push\_back operation that expands the vector:
+
+    Let $\Phi = 2 \cdot s - N$ where the $s$ is the actual size of a vector and $N$ is its capacity. Remember that the expansion occurrs once $s == N$.
+
+    Let's consider a push\_back operation that doubles the size of the vector:
+
+    1. $T_{r} = s+1 = N+1$ - because we need to copy all the existing elements in a new buffer + place a new element; here $s=N$ because the extention could only happen once $s=N$.
+
+    2. $\Phi_0 = 2\cdot s - N \geq 0$ - value of the potential function before the operation.
+
+    3. $\Phi_1 = 2\cdot (s + 1) - 2N \geq 0$ - value of the potential function after the operation.
+
+    Thus, we have:
+
+    $T_a = T_r + \Phi_1 - \Phi_0 = N+1 + (2s + 2 - 2N - 2s + N) = N+1 + (2-N) = N-N+3 = \Theta(1)$.\newline
+
+
+    2. Analyse push\_back operation that does not expand the vector:
+
+    Notice that in this case $\Delta\Phi = \Phi_1 - \Phi_0 = const$ and $T_r = const$, thus $T_a = const = \Theta(1)$.\newline
+
+    For more examples check the \href{https://en.wikipedia.org/wiki/Potential_method#Multi-Pop_Stack}{wiki} page.
+
+
+\end{example}

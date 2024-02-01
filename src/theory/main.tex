@@ -1,11 +1,40 @@
 % \documentclass{article}
 \input{core}
+% \usepackage{tabularx}
+% \usepackage{systeme}
 
+\enablemath
 
 \begin{document}
 \gdef\CourseName{GDSC: Algorithms \& Data Structures}
 \author{Sergey Kopelevich, Vladislav Artiukhov}
 \makegood
+
+\Section{Big-O Notations}{Vladislav Artiukhov}
+
+\Subsection{Definitions of $O, o, \Omega, \omega, \Theta$}
+\Subsection{Asymptotic types: linear, quadratic, polylog, exponential}
+
+For now refer to \textbf{GDSC Competitive Programming Abstract (topics 1-5), Fall 2023}.
+
+\Section{Basic data structures}{Vladislav Artiukhov}
+
+\Subsection{Arrays, doubly linked list, singly linked list}
+\Subsection{std::vector and how it works internally}
+\Subsection{stack, queue, deque}
+\Subsection{Keeping minimum for $O(1)$: min-stack, min-queue implementation}
+
+For now refer to \textbf{GDSC Competitive Programming Abstract (topics 1-5), Fall 2023}.
+
+% TODO: create files for already written topics and insert move contents here
+
 \Section{Master Theorem}{Vladislav Artiukhov}
 \include{06-master-theorem.tex}
+
+\Section{Amortized Analysis}{Vladislav Artiukhov}
+\include{07-amortized-analysis.tex}
+
+\Section{Binary Search}{Vladislav Artiukhov}
+\include{08-binary-search.tex}
+
 \end{document}

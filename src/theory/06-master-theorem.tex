@@ -1,1 +1,106 @@
-Your introduction goes here! Simply start writing your document and use the Recompile button to view the updated PDF preview. Examples of commonly used commands and features are listed below, to help you get started.
+\Subsection{Master Theorem}
+
+Algorithms that are written in a recursive manner oftentimes utilize \textit{divide-and-conquer} technique which implies devision of the task into smaller subtasks that are processed by further recusive calls of the algorithm; once the subtask is small enough it is considered as a base case and processed manually. Some examples include \textbf{Merge sort algorithm}, \textbf{Binary search tree traversal}, etc.
+
+For such algorithms we need to divide their asymptotics. \textbf{Master Theorem} is a generalized method that yields asymptotically tight bounds for divide and conquer algorithms [\href{https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)#Generic_form}{wiki}].
+
+\begin{theorem}
+    \textbf{Master Theorem}
+
+    Consider the following recurrence relation: $T(n) = a \cdot T(\frac{n}{b}) + f(n)$ where $f(n) = n^c$ for constants $a > 0, b > 1, c \geq 0$; let $k = \log_{b}{n}$ be the recursion depth. Then the following holds:
+
+    \begin{equation}
+        \begin{cases}
+            T(n) = \Theta(a^k) = \Theta(n^{\log_{b}{a}}), \quad a > b^c\\
+            T(n) = \Theta(f(n)) = \Theta(n^c), \quad a < b^c\\
+            T(n) = \Theta(k \cdot f(n)) = \Theta(n^c \cdot \log{n}), \quad a = b^c\\
+        \end{cases}
+    \end{equation}
+
+\end{theorem}
+
+
+
+\begin{proof}
+
+    $$ T(n) = f(n) + a \cdot T(\frac{n}{b}) = f(n) + a f(\frac{n}{b}) + a^2 f(\frac{n}{b^2}) + ... + a^k f(\frac{n}{b^k}) \quad | \ f(n)=n^c$$
+    $$ T(n) = n^c + a\cdot (\frac{n}{b})^c + a^2\cdot (\frac{n}{b^2})^c + ... + a^k\cdot (\frac{n}{b^k})^c $$
+    $$ T(b) = n^c \cdot (1 + \frac{a}{b^c} + (\frac{a}{b^c})^2 + ... + (\frac{a}{b^c})^k) $$
+
+    Let $q = \frac{a}{b^c}$ and $S(q) = 1 + q + ... + q^k$:
+
+    1. If $q=1$: $S(q) = 1 + 1 + ... + 1 = k+1 = \log_{b}{n} + 1 \implies T(n) = \Theta(f(n) \cdot \log{n})$.
+
+    2. If $q<1$: $S(q)$ is a geometric progression, thus it is equal to $S(q) = \frac{1-q^{k+1}}{1-q} = const = \Theta(1) \implies T(n) = \Theta(f(n))$.
+
+    3. If $q>1$: $S(q) = q^k + \frac{q^k-1}{q-1} = \Theta(q^k) \implies T(n) = \Theta(a^k \cdot (\frac{n}{b^k})^c) = \Theta(a^k)$.
+
+    \textbf{Note}: $f(n)$ could be $O(n^c)$; it does not violate the proof ($f(n) = O(n^c) = C \cdot n^c$).
+
+\end{proof}
+
+
+\Subsection{Generalized Master Theorem}
+
+\begin{theorem}
+    \textbf{Generalized Master Theorem}
+
+    In the case of $f(n) = n^c \cdot \log_{d}{n}$ Master Theorem still holds:
+
+    $T(n) = a \cdot T(\frac{n}{b}) + n^c \cdot \log_{d}{n}$, $a>0, \ b>1, \ c\geq 0, \ d \geq 0$.
+
+    \begin{equation}
+        \begin{cases}
+            T(n) = \Theta(a^k) = \Theta(n^{\log_{b}{a}}), \quad a > b^c\\
+            T(n) = \Theta(f(n)) = \Theta(n^c \cdot \log^{d}{n}), \quad a < b^c\\
+            T(n) = \Theta(k \cdot f(n)) = \Theta(n^c \cdot \log^{d+1}{n}), \quad a = b^c\\
+        \end{cases}
+    \end{equation}
+
+\end{theorem}
+
+
+\Subsection{Algorithm for recurrence relations}
+
+There are also recurrence relations with the following form:
+
+$T(n) = a_0 \cdot T(n - p_0) + a_1 \cdot T(n - p_1) + ... + a_k \cdot T(n-p_k) \quad a_i, p_i > 0, \ \sum p_i > 1$
+
+There exists an algorithm of how to find asymptotics for such relations:
+
+\begin{theorem}
+    \textbf{Algorithm for recurrence relations}
+
+    Given $T(n)$ of the above form with the above constants, then the following holds:
+
+    $T(n) = \Theta(\alpha^n)$, such that $\alpha > 1$ and it is the \textbf{only root} of the equation: $\alpha^n = a_0 \cdot \alpha^{n-p_0} + ... + a_k \cdot \alpha^{n-p_k}$
+
+\end{theorem}
+
+
+\begin{example}
+    \textbf{Use of Master Theorem}
+
+    1. $T(n) = 4 \cdot T(\frac{n}{2}) + 20 \cdot n^\frac{3}{2}$
+
+    $a=4, \ b=2, \ c=\frac{3}{2}, \ f(n)=20\cdot n^\frac{3}{2} \implies a=4 > b^c=\sqrt{8} \implies T(n) = \Theta(n^{log_{b}{a}}) = \Theta(n^2)$.
+
+    2. Merge sort algorithm recurrence relation: $T(n) = 2 \cdot T(\frac{n}{2}) + C\cdot n^1$
+
+    $a=2, \ b=2, \ c=1 \implies a=4 = b^c=2^1 \implies T(n) = \Theta(n^1 \cdot \log{n})$
+
+\end{example}
+
+
+\begin{example}
+    \textbf{Use of Algorithm for recurrence relations}
+
+    1. $T(n) = T(n-1) + 6 \cdot T(n-2)$
+
+    $T(n) = \Theta(\alpha)$, notice that $\alpha = 3$ satisfies the equation: $3^n = 3^{n-1} + 6 \cdot 3^{n-2}$.
+
+    2. $T(n) = T(n-1) + T(n-2) + T(n-3)$
+
+    $1 = \alpha^{-1} + \alpha^{-2} + \alpha^{-3} \implies \alpha \approx 1.839$
+
+\end{example}
