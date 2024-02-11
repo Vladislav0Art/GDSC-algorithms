@@ -8,3 +8,4 @@ tmp
 *.gz
 *.toc
 src/theory/*.pdf
+build
