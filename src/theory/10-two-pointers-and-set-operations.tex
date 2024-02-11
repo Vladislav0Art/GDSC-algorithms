@@ -1,0 +1,97 @@
+\Subsection{What a set is}
+
+We are going to understand a set as a data structure which contains \textbf{distinct} elements (otherwise \textbf{multiset}) sorted in the \textbf{ascending order}.
+
+STL library contains a data structure that complies to the above definition: \href{https://en.cppreference.com/w/cpp/container/set}{\textbf{std::set<T>}}. In the following subsections we are going to look at fundamental operations over sets. We assume that every time when we are given a set, it is an ascendingly sorted array of distinct elements.
+
+\Subsection{Intersection of sets}
+
+Given two sets $A$ and $B$ and we want to create a set $C = A \cap B$ in $O(|A| + |B|)$:
+
+\begin{lstlisting}[language=C++]
+vector<int> intersection(vector<int> A, vector<int> B) {
+    int i = 0;
+    int j = 0;
+    vector<int> C;
+
+    for (; i < |A| && j < |B|; ++j) {
+        while (i < |A| && A[i] < B[j]) ++i;
+        // last condition means "either 1st element of B or a distinct element"
+        // condition can be removed since all elements of bith A and B are distinct
+        if (i < |A| && A[i] == B[j] && (j == 0 || B[j - 1] != B[j])) {
+            C.push_back(B[j]);
+        }
+    }
+
+    return C;
+}
+\end{lstlisting}
+
+The above algorithm can be extended to an intersection of an arbitrary number of sets $A_0, A_1, ..., A_k$. You can try to do that in the following LeetCode problem: \href{https://leetcode.com/problems/intersection-of-multiple-arrays/description/}{2248. Intersection of Multiple Arrays}.
+
+
+
+\Subsection{Union of sets}
+
+Given two sets $A$ and $B$, we want to find $C = A \cup B$ in $O(|A| + |B|)$:
+
+\begin{lstlisting}[language=C++]
+vector<int> union(vector<int> A, vector<int> B) {
+    int i = 0;
+    int j = 0;
+    vector<int> C;
+
+    for (; j < B.size(); ++j) {
+        while (i < A.size() && A[i] <= B[j]) {
+            C.push_back(A[i++]);
+        }
+        // in the case if last added element A[i] is equal to B[j]
+        if (C.empty() || C.back() != B[j]) {
+            C.push_back(B[j]);
+        }
+    }
+
+    while (i < A.size()) {
+        C.push_back(A[i++]);
+    }
+
+    return C;
+}
+\end{lstlisting}
+
+\Subsection{Difference of sets}
+
+Given two sets $A$ and $B$, we want to find $C = A \setminus B$ in $O(|A| + |B|)$:
+
+\begin{lstlisting}[language=C++]
+vector<int> difference(vector<int> A, vector<int> B) {
+    int i = 0;
+    int j = 0;
+    vector<int> C;
+
+    for (; i < A.size(); ++i) {
+        // skipping elements less than A[i]
+        while(j < B.size() && B[j] < A[i]) {
+            ++j;
+        }
+        // if A[i] not present in B add A[i] to the answer
+        if (j >= B.size() || B[j] != A[i]) {
+            C.push_back(A[i]);
+        }
+    }
+
+    return C;
+}
+\end{lstlisting}
+
+You may solve this task by yourself of LeetCode: \href{https://leetcode.com/problems/find-the-difference-of-two-arrays/description/}{2215. Find the Difference of Two Arrays}
+
+\Subsection{STL implementations}
+
+STL already has implementations of all the operations mentioned above: \href{https://cplusplus.com/reference/algorithm/set\_difference/}{std::set\_difference}, \href{https://cplusplus.com/reference/algorithm/set\_union/}{std::set\_union}, \href{https://cplusplus.com/reference/algorithm/set\_intersection/}{std::set\_intersection}, and \href{https://cplusplus.com/reference/algorithm/merge/}{std::merge} (the latter one is the same as std::set\_union but it does not remove the duplicate elements). All the mentioned STL functions are called in the following manner:
+
+\begin{lstlisting}[language=C++]
+int k = std::merge(A, A + |A|, B, B + |B|, C) - C;
+// C - pointer to where to store the result (memory allocation is your responsibility)
+// k - number of elements in the result, i.e. k == |C|
+\end{lstlisting}
