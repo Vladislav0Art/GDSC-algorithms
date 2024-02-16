@@ -4,12 +4,14 @@
 
 template<typename /*class*/ T>
 T max(T a, T b) {
+    // expect 'bool operator<(const T&, const T&)' defined
     return a < b ? b : a;
 }
 
 
 template<typename T>
 void print(const T& value) {
+    // expect 'std::iostream& operator<<(std::iostream&, const T&)' defined
     std::cout << value << " ";
 }
 
@@ -30,7 +32,8 @@ public:
     }
 
     // support for std::begin/std::end
-    typedef typename std::vector<T>::iterator iterator;
+    using iterator = typename std::vector<T>::iterator;
+    // or: 'typedef typename std::vector<T>::iterator iterator;'
 
     iterator begin() {
         return m_values.begin();
@@ -67,4 +70,13 @@ int main() {
     traverse(stack, [](int value) {
         std::cout << 2 * value << " ";
     });
+
+    std::cout << "\n";
+
+    // range-based for-loop
+    for (auto& elem : stack) {
+        elem += 100;
+    }
+
+    traverse(stack, print<int>);
 }
