@@ -24,7 +24,7 @@ There are several methods that are referred to as amortized analysis (\href{http
 
     % TODO: use \varphi + use \mathbb instead of \mathbf, inf -> \infty
 
-    Introduce a \textbf{potential function} called $\Phi: \mathbf{S} \to \mathbf{R_{0}^{+}}$ where $\mathbf{S}$ is a set of states of the considered data structure and $R_{0}^{+} = [0, +\inf)$, i.e. the potential function maps states of the data structure to some non-negavite values. As an important edge case for the initial state $S_{init}$: $\Phi(S_{init}) = 0$.
+    Introduce a \textbf{potential function} called $\Phi: \mathbf{S} \to \mathbf{R_{0}^{+}}$ where $\mathbf{S}$ is a set of states of the considered data structure and $R_{0}^{+} = [0, +\infty)$, i.e. the potential function maps states of the data structure to some non-negavite values. As an important edge case for the initial state $S_{init}$: $\Phi(S_{init}) = 0$.
 
     Let $o_i$ be an individual operation within some sequence of operations named $Q$. Let $S_{i-1}$ be the state of the considered data structure before the execution of the operation $o_i$ and $S_{i}$ be the state after the execution of $o_i$. Let $\Phi$ be a chosen potential function, then the amortized time for an operation $o_i$ is defined as follows:
 
@@ -56,6 +56,8 @@ There are several methods that are referred to as amortized analysis (\href{http
 
     $$ T_{a}(O) = \Sigma_{i=1}^{n} (T_{r}(o_i) + \Phi(S_i) - \Phi(S_{i-1})) = T_{r}(O) + \Phi(S_n) - \Phi(S_0) $$
     $$ T_{a}(O) = T_{r}(O) + \underbrace{\Phi(S_n)}_{\cdot \geq 0} - \underbrace{\Phi(S_0)}_{\cdot = 0} \geq T_{r}(O) $$
+
+    Thus, the amortized time provides an accurate upper bound on the actual time of a \textbf{sequence of operations}, even though the amortized time for an individual operation may vary widely from its actual time.
 
 \end{proof}
 

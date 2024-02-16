@@ -79,7 +79,7 @@ std::lower_bound(
 
 \Subsection{Use of a predicate}
 
-We could abstract the implementation even further via searching for a predicate. Predicate is such a function $f: S \to \{0, 1\}$. Then let's consider the predicate $f(i) = if (a_i < x) then 0 else 1$ - in this case the binary search will find such indicies $l$ and $r$ that satisfy the following:
+We could abstract the implementation even further via searching for a predicate. Predicate is such a function $f: S \to \{0, 1\}$. Then let's consider the predicate $f(i) = if (a_i < x) \ then\ 0\ else\ 1$ - in this case the binary search will find such indicies $l$ and $r$ that satisfy the following:
 
 1. $l + 1 = r$
 
@@ -91,8 +91,8 @@ We could abstract the implementation even further via searching for a predicate.
 int binary_search(int l, int r, int x) {
     while(r - l > 1) {
         int m = (l + r) / 2;
-        if (f(m)) r = m; // invariant: a[r] >= x
-        else l = m; // invariant a[l] < x
+        if (f(m)) r = m; // invariant: f(r) >= x
+        else l = m; // invariant f(l) < x
     }
     return r;
 }

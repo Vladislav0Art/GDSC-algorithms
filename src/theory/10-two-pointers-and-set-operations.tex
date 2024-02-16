@@ -95,3 +95,23 @@ int k = std::merge(A, A + |A|, B, B + |B|, C) - C;
 // C - pointer to where to store the result (memory allocation is your responsibility)
 // k - number of elements in the result, i.e. k == |C|
 \end{lstlisting}
+
+\Subsection{Problem example}
+
+% \begin{problem}
+
+%     Given an array $a$ of size $n$ and $m$ queries (all queries are given at once) of type "count the number of distinct numbers in the segment $[l_i, r_i]$ of the array $a$".
+
+%     Time complexity: $O(n + m)$ $O(m \cdot \log{n})$.
+
+%     Space complexity: $O(n + m)$.
+
+% \end{problem}
+
+% \begin{solution}
+
+    % Notice that the problem is an \textbf{offline} task, i.e. all the queries are given, thus we can sort the components $l_i$, $r_i$ in the ascending order $\implies$ now we can treat them us a sequence of \textbf{events} of opening and closing segments.
+
+    % Now we can traverse all the events: every time we encounter $l_i$ we place it in the stack $s$ to later use, once $r_i$ is encountered, due to sorting order, it is the \textbf{closing event} of the opening event $l_i$ on top of the stack $s$
+
+% \end{solution}
