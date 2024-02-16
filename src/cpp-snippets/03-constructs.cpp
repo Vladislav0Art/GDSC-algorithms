@@ -67,5 +67,12 @@ int main() {
     assert(func1_ptr(10, 20, 30) == func1(10, 20, 30));
     assert(func2_ptr() == func2());
 
+    int (*func3_ptr)(int, double) = func3;
+
+    func3(); // OK: all default
+    // func3_ptr(); // CE: too few args to function
+
+    assert(func3_ptr(20, 32.3) == func3(20, 32.3));
+
     return 0;
 }
