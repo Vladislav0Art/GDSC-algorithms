@@ -12,12 +12,14 @@ struct Point {
     Point(int val) {
         x = val;
         this->y = val;
+        print();
     }
 
     void print() {
         cout << "Point(" << x << ", " << y << ")\n";
     }
 };
+
 
 class Point2 {
 // default member access is 'private'!
