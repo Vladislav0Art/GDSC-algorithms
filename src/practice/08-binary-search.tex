@@ -1,0 +1,49 @@
+\Subsection{Binary search over the answer}
+
+\begin{problem}\textbf{Poles installation}
+
+    Given $n$ points $c_i$, $i=0..n-1$ on a coordinate axis $x$ sorted in the ascending order and $k$ poles. You need to place all of the $k$ poles on the coordinate points $c_i$. so that the \textbf{minimum distance} between \textbf{two consequent} poles is maximized.
+
+    \underline{Note:} the actual problem is called "Cows in the stalls", you can find it here (in Russian): \href{https://ru.algorithmica.org/cs/interactive/answer-search/}{"Cows in the stalls"}.
+
+\end{problem}
+
+
+\begin{solution}
+
+    The statement can be rewritten in a mathematical notation as follows:
+
+    $d := d_{min}(c_i, c_j) \to max, \ i < j$ - where $d$ is the minimum distance between the two points $c_i$ and $c_j$ where two consequent poles are installed.
+
+    The maximization problem may seam not obvious because the function $d$ has a complex representation, and there is no a clear way of its optimization.
+
+    Let's assume that we want $d$ to be greater than some value $x$. What do we need to satisfy to claim that $d > x$?
+
+    Indeed, we need to prove that all the $k$ poles can be placed on the coordinate points $c_i$ in such a way that $\forall i: d(p_{i-1}, p_{i}) = d(c_{j_{i-1}}, c_{j_i}) = |c_{j_{i-1}} - c_{j_i}| \geq x$, i.e. the distance between all neighbouring poles is at least $x$.
+
+    Let's introduce a function $f(x) = \text{\# of poles placed, so that min distance $d \geq x$}$. This function is extremely easy to calculate: merely go over all available coordinates $c_i$ and for the current pole $p_j$ select a coordinate, so that distance between $p_j$ and the previous pole $p_{j-1}$ is at least $x$ and increment the number of placed poles; if at the end the number of placed poles is $k$, then $d \geq x$. Obvious enough, $f(x)$ is a monotonically decreasing function, because the greater the constraint $x$ for the min distance $d$, the fewer number of poles can be placed.
+
+    Now, we are interested in finding first point $x$ where $f(x) = k$, this can be done easily via binary search.
+
+    \TODO{finish}
+
+\end{solution}
+
+
+\begin{problem}\textbf{Printers}
+
+    There are two printers. One prints one page in $x$ minutes, the other prints in $y$ minutes. In what time will both prints print $n$ pages?
+
+\end{problem}
+
+\begin{solution}
+
+    There is a formula solution, but let's think about the problem differently.
+
+    Given $t$ minutes, how many pages can both printers print? Let it be a function $f(t) = p$ where $p$ is the number of pages.
+
+    $f(t) = \lfloor \frac{t}{x} \rfloor + \lfloor \frac{t}{y} \rfloor$
+
+    If in time $t$ we can print $p$ pages, then we can print $1, 2, 3, .., p-1$ pages as well, thus $f(t)$ is monotonic over $t$ and the time $t_0$ for $n$ pages can be found via binary search.
+
+\end{solution}
