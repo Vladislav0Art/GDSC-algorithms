@@ -21,11 +21,43 @@
 
     Indeed, we need to prove that all the $k$ poles can be placed on the coordinate points $c_i$ in such a way that $\forall i: d(p_{i-1}, p_{i}) = d(c_{j_{i-1}}, c_{j_i}) = |c_{j_{i-1}} - c_{j_i}| \geq x$, i.e. the distance between all neighbouring poles is at least $x$.
 
-    Let's introduce a function $f(x) = \text{\# of poles placed, so that min distance $d \geq x$}$. This function is extremely easy to calculate: merely go over all available coordinates $c_i$ and for the current pole $p_j$ select a coordinate, so that distance between $p_j$ and the previous pole $p_{j-1}$ is at least $x$ and increment the number of placed poles; if at the end the number of placed poles is $k$, then $d \geq x$. Obvious enough, $f(x)$ is a monotonically decreasing function, because the greater the constraint $x$ for the min distance $d$, the fewer number of poles can be placed.
+    Let's introduce a function $f(x) = \text{(\# of poles placed, so that min distance $d \geq x$)}$. This function is extremely easy to calculate: merely go over all available coordinates $c_i$ and for the current pole $p_j$ select a coordinate, so that distance between $p_j$ and the previous pole $p_{j-1}$ is at least $x$ and increment the number of placed poles; if at the end the number of placed poles is $k$, then $d \geq x$.
+
+    Obviously enough, $f(x)$ is a monotonically decreasing function, because the greater the constraint $x$ for the min distance $d$, the fewer number of poles can be placed.
 
     Now, we are interested in finding first point $x$ where $f(x) = k$, this can be done easily via binary search.
 
-    \TODO{write solution}
+\begin{lstlisting}[language=C++]
+std::vector<int> coords;
+
+bool func(int x) {
+    int poles_placed = 1;
+    int last_pole_pos = coords[0];
+    for (int c : coords) {
+        if (c - last_pole_pos >= x) {
+            poles_placed++;
+            last_pole_pos = c;
+        }
+    }
+    return poles_placed;
+}
+
+int solve() {
+    std::sort(coords.begin(), coords.end());
+    // minimum x, always sufficient since d_min >= 0
+    int l = 0;
+    // distance between first and last coordinates + 1
+    int r = coords.back() - coords.first() + 1;
+
+    while (r - l > 1) {
+        int m = (l + r) / 2;
+        if (func(m) >= k) l = m;
+        else r = m;
+    }
+
+    return l;
+}
+\end{lstlisting}
 
 \end{solution}
 
@@ -45,5 +77,7 @@
     $f(t) = \lfloor \frac{t}{x} \rfloor + \lfloor \frac{t}{y} \rfloor$
 
     If in time $t$ we can print $p$ pages, then we can print $1, 2, 3, .., p-1$ pages as well, thus $f(t)$ is monotonic over $t$ and the time $t_0$ for $n$ pages can be found via binary search.
+
+    As for the left boundary we can take $0$ and as for the right boundary, the $x \cdot n$ (time of the first printer working alone) will be always sufficient.
 
 \end{solution}
