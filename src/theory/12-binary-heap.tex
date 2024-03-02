@@ -32,7 +32,7 @@ Children of a vertex at $i$ are vertices at $2i$ and $2i+1$; the parent of a ver
 
     2. \textbf{Transition:} $k \to k+1$:
 
-    Let's consider the range on the step $k$: $[2^k, 2^{k+1}-1]$, now let's see what are the children for the vertex $v_1$ at $2^k$ and the vertix $v_2$ at $2^{k+1}-1$ (children of all vertices between $v_1$ and $v_2$ will have numbers in between the obtained range):
+    Let's consider the range on the step $k$: $[2^k, 2^{k+1}-1]$, now let's see what are the children for the vertex $v_1 = 2^k$ and the vertex $v_2 = 2^{k+1}-1$ (children of all vertices between $v_1$ and $v_2$ will have numbers in between the obtained range):
 
         1. $v_1$: $2^k \to 2^{k+1}, 2^{k+1}-1$.
 
@@ -167,7 +167,7 @@ void Del(int i) {
     int ind = pos[i]; // index inside heap a[]
 
     a[ind] = h[n]; n--;
-    pos[a[ind]] = ind; // update pos[] for i-th element of values[]
+    pos[a[ind]] = ind; // update pos[] for the 'a[ind]'-th element of values[]
 
     // both sift operations because new element can be
     // either greater than its children or less than its parent
@@ -213,7 +213,7 @@ void Build(int n, int a[]) {
 \begin{proof}
     Let $n = 2^k-1$, then our heap is a full binary tree, because each element except for the leaves will have 2 children. The last level of the heap will contain $2^{k-1}$ elements, the pre-last level will contain $2^{k-2}$ elements, and so on.
 
-    \textbf{siftDown(i)} works in $O(\text{depth of the subtree $i$})$, thus its total time will be:
+    \textbf{siftDown(i)} works in $O(\text{depth of the subtree of $i$})$, thus its total time will be:
 
     $\sum_{i=1}^{k} 2^{k-i} \cdot i = 2^k \cdot \sum_{i=1}^{k} \frac{i}{2^i} =_{(*)} 2^k \cdot \Theta(1) = (n+1) \cdot \Theta(1) = \Theta(n)$.
 
