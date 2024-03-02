@@ -27,51 +27,62 @@
 
 \end{example}
 
-% \begin{solution}
-
-% Idea: $exactly(k) = atMost(k) - atMost(k-1)$, thus let's count the number of subarrays with at most $k$ distinct numbers and the number of subarrays with at most $k-1$ distinct numbers.
-
-% % In order to do that we need to keep the number of distinct numbers $cnt$ in a sliding window of a variable length, while $cnt \leq k$ the
 
 
-% \begin{lstlisting}[language=C++]
-% int subarraysWithAtMostKDistinct(vector<int>& nums, int k) {
-%     unordered_map<int, int> counts;
-%     int i = 0;
-%     int cnt = 0;
-%     int result = 0;
+\begin{solution}
 
-%     for (int j = 0; j < nums.size(); ++j) {
-%         if (counts[nums[j]]++ == 0) {
-%             ++cnt;
-%         }
+Idea: $exactly(k) = atMost(k) - atMost(k-1)$, thus let's count the number of subarrays with at most $k$ ($\leq k$) distinct numbers and the number of subarrays with at most $k-1$ distinct numbers.
 
-%         if (cnt <= k) {
-%             result += (j - i + 1);
-%         }
+In order to count distinct numbers if a sliding window we need keep the count of each distinct value in the sliding window.
 
-%         while (i <= j && cnt > k) {
-%             --counts[nums[i]];
-%             if (counts[nums[i]] == 0) {
-%                 --cnt;
-%             }
-%             ++i;
+Once the right border of the window goes forward we increment the count of a new value $a_j$, and if it the count became $1$, then increment $cnt$ (since the number of distinct numbers increased by one).
 
-%             if (cnt == k) {
-%                 result += (j - i + 1);
-%             }
-%         }
-%     }
+Once the left border of the window goes forward we decrement the count of a tracked value $a_i$ (before incrementing $i$) and if this value becomes $0$, we decrement the number of distinct values.
 
-%     return result;
-% }
+Let's keep a sliding window $[i, j]$ that will contain $\leq k$ distinct elements:
 
-% int subarraysWithKDistinct(vector<int>& nums, int k) {
-%     int a = subarraysWithAtMostKDistinct(nums, k);
-%     int b = subarraysWithAtMostKDistinct(nums, k - 1);
+1. If current number of distinct values is $\leq k$ we only need to move forward the right boundary $j$ and on each iteration increase the result by $(j - i + 1)$ because the number of subarrays that end in $j$ and contain $\leq k$ distinct values is the number of suffixes the subarray $a[i..j]$ has (suffixes are: $[i+1..j]$, $[i+2..j]$, ..., $[j-1..j]$, $[j..j]$). This way we will count all the subarrays of $a$ that contain $\leq k$ elements.
 
-%     return a - b;
-% }
-% \end{lstlisting}
+2. Once the number of distinct values $cnt$ inside the sliding window has become $(k+1)$ we need to move forward the left boundary $i$ until $cnt$ becomes equal to $k$.
 
-% \end{solution}
+By the above algorithm we found the result of the function $atMost(k)$, now do the same for $atMost(k-1)$ and return the their difference.
+
+
+\begin{lstlisting}[language=C++]
+int atMost(vector<int>& nums, int k) {
+    unordered_map<int, int> counts;
+    int i = 0;
+    int cnt = 0;
+    int result = 0;
+
+    for (int j = 0; j < nums.size(); ++j) {
+        if (counts[nums[j]]++ == 0) {
+            ++cnt;
+        }
+
+        if (cnt <= k) {
+            result += (j - i + 1);
+        }
+
+        while (i <= j && cnt > k) {
+            --counts[nums[i]];
+            if (counts[nums[i]] == 0) {
+                --cnt;
+            }
+            ++i;
+
+            if (cnt == k) {
+                result += (j - i + 1);
+            }
+        }
+    }
+
+    return result;
+}
+
+int exact(vector<int>& nums, int k) {
+    return atMost(k) - atMost(k-1);
+}
+\end{lstlisting}
+
+\end{solution}
