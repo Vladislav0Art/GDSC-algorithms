@@ -206,6 +206,61 @@ bool dfs(int v) {
 Now the \textbf{path} vector contains the verticies from the $u$ to the $v$ (i.e. the order is reversed since $u$ was added first).
 
 
-\Subsection{Edge classification}
 \Subsection{Topological sorting}
-\Subsection{Breadth-first search (bfs)}
+
+\begin{definition}
+    \textbf{Topological sorting} is an ordering of the verticies of \textbf{directed} (oriented) graph according to the partial order given by the graph's edges.
+
+    In order words, topological sorting is a mapping of integers to the verticies $a_v$, so that: $\forall e := \ v \to u: \ a_v < a_u$.
+\end{definition}
+
+\begin{lemma}
+    Topological sorting exists $\leftrightarrow$ the graph is \textit{acyclic}.
+\end{lemma}
+
+\begin{proof}
+
+    1. \textbf{$\bar{A} \leftarrow \bar{B}$}: If there is a cycle $v_1 \to v_2 \to .. \to v_{k-1} \to v_k \to v_1$, then we have the sequence of inequalities:
+
+    $a_{v_1} < a_{v_2} < a_{v_3} < .. < a_{v_{k-1}} < a_{v_k} < a_{v_1}$ $\implies a_{v_1} < a_{v_1}$ which is false.
+
+    2. \textbf{$A \leftarrow B$}: If there are no cycles in the graph then there exists a vertex $v$ whose $\deg_{in}(v) = 0$, then let's assign $a_{v} := 0$ and remove the vertex. There still will be no cycles, do the same procedure until no verticies left in the graph $\implies$ topological sorting is constructed.
+
+\end{proof}
+
+\begin{lstlisting}[language=C++]
+// non-recursive solution
+vector<int> topSort(vector<vector<int>>& graph /*directed graph*/) {
+    vector<int> ans;
+    int start = find_vertex_of_zero_indeg(graph); // assert it exists
+
+    queue<int> q = { start };
+    while (!q.empty()) {
+        int v = q.front(); q.pop();
+        ans.push_back(v);
+        // we remove vertex v and update indegs of its neighbors
+        for (int u : graph[v]) {
+            if (--deg[u] == 0) {
+                q.push(u);
+            }
+        }
+    }
+
+    return ans;
+}
+
+// recursive solution
+vector<int> ans;
+void dfs(int v) {
+    if (marked[v]) return;
+    marked[v] = 1;
+    for (int u : graph[v]) {
+        dfs(u);
+    }
+    ans.push_back(v);
+}
+std::reverse(std::begin(ans), std::end(ans));
+for (int v : ans) {
+    std::cout << v << " ";
+}
+\end{lstlisting}
