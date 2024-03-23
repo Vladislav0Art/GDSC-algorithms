@@ -37,7 +37,7 @@
 
     Since the sorting algorithm $A$ is based on comparisons we can assign a binary value for each comparison. The algorithm does $k$ comparisons, if on the $i$-th position the comparison yielded "less or equal" then we assign $0$, if it yielded "greater" we assign $1$ $\implies$ we end up having a binary string of size $k$. Notice that there is a bijection between the set of the produced strings of size $k$ and the set of inputs of size $n$ $\implies$ $2^k = n!$:
 
-    $o(n \log{n}) = \log{2^k} = \log{n!} \implies \log{n!} = o(n \log{n})$ but we know that $\log{n!} = \Theta(n \log{n})$, thus there is a no bijection $\implies$ there exist a test on which the algorithm $A$ produces a wrong result.
+    $o(n \log{n}) = \log{2^k} = \log{n!} \implies \log{n!} = o(n \log{n})$ but we know that $\log{n!} = \Theta(n \log{n})$, thus there is no bijection since one set is greater in size than the other $\implies$ there exists a test on which the algorithm $A$ produces a wrong result.
 
 \end{proof}
 
