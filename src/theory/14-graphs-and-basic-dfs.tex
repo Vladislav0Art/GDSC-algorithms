@@ -12,9 +12,9 @@
 
     3. If each edge has a corresponding weight assigned to it then the graph is called \textbf{weighted graph}.
 
-    4. If $E$ is a \textit{multiset}, i.e. some verticies may have several edges between them, then such edges are called \textbf{multiple edges} and the graph may be called \textbf{multi-gprah}.
+    4. If $E$ is a \textit{multiset}, i.e. some verticies may have several edges between them, then such edges are called \textbf{multiple edges} and the graph may be called \textbf{multi-graph}.
 
-    5. For an edge $e = (a,\ b)$ we say that $e$ is \textbf{incident} to the vertex $a$/$b$.
+    5. For an edge $e = (a,\ b)$ we say that $e$ is \textbf{incident} to the verticies $a$ and $b$.
 
     6. The \textbf{degree} of a vertex is the number of its incident edges, denoted as $\deg{v}$.
 
@@ -61,7 +61,7 @@
 \end{definition}
 
 
-\Subsection{How to store a gprah programmically}
+\Subsection{How to store a graph programmically}
 
 We will assume that $|V| = n$ and $|E| = m$. Sometimes $V$ and $E$ could be used to denote their sizes.
 
@@ -90,7 +90,7 @@ int c[n][n]; // here c[a][b] denote the weight of an edge between a and b
 
 \Subsubsection{Adjacency Lists}
 
-For each vertex $v$ we store a list of its adjacent edges:
+For each vertex $v$ we store a list of its incident edges:
 
 1. $v_0 \to e_{i_0}, e_{i_1}, ..., e_{i_k}$
 

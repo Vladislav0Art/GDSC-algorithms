@@ -2,7 +2,7 @@
 
 \begin{definition}\textbf{Stable sorting algorithm}
 
-    The given sorting algorithm is called \textbf{stable} if equal elements are place in the same order (among these equal elements) as it was in the initial condition, i.e. $\forall i \neq j: a_i = a_j, \ \pi$ - some permutation that sorts the elements, then $i < j \implies \pi(i) < \pi(j)$.
+    The given sorting algorithm is called \textbf{stable} if equal elements are placed in the same order (among these equal elements) as it was in the initial placement, i.e. $\forall i \neq j: a_i = a_j, \ \pi$ - some permutation that sorts the elements, then $i < j \implies \pi(i) < \pi(j)$.
 
 \end{definition}
 
@@ -21,7 +21,7 @@
 
 \begin{lemma}
 
-    The sorting algorithm $A$ based on the comparisons of the elements which does for all posible inputs of size $n$ $o(n \log{n})$ comparisons is \textbf{incorrect}, i.e. $\exists$ test $T$ on which the result of sorting by $A$ will be \textbf{incorrect}.
+    The sorting algorithm $A$ based on the comparisons of the elements which does $o(n \log{n})$ comparisons for all posible inputs of size $n$ is \textbf{incorrect}, i.e. $\exists$ test $T$ on which the result of sorting by $A$ will be \textbf{incorrect}.
 
 \end{lemma}
 
@@ -29,11 +29,15 @@
 
     Notice that an input of size $n$ can be expressed as a permutation of indicies $\pi: I \to I$ where $I$ is the set of indicies, i.e. $I:=\{0, 1, 2, .., n-1\}$, then there exist $n!$ inputs.
 
+    \begin{center}
+        \includegraphics[scale=0.18]{./assets/13-sorting-algorithms/3.png}
+    \end{center}
+
     For the proof it is convinient for us to think that for every input the algorithm $A$ does exactly $k$ comparisons (if in fact it does less then let's just do some meaningless comparisons to get exactly $k$).
 
     Since the sorting algorithm $A$ is based on comparisons we can assign a binary value for each comparison. The algorithm does $k$ comparisons, if on the $i$-th position the comparison yielded "less or equal" then we assign $0$, if it yielded "greater" we assign $1$ $\implies$ we end up having a binary string of size $k$. Notice that there is a bijection between the set of the produced strings of size $k$ and the set of inputs of size $n$ $\implies$ $2^k = n!$:
 
-    $o(n \log{n}) = 2^k = n! \implies n! = o(n \log{n})$ but we know that $n! = \Theta(n \log{n})$, thus there is a no bijection $\implies$ there exist a test on which the algorithm $A$ produces a wrong result.
+    $o(n \log{n}) = \log{2^k} = \log{n!} \implies \log{n!} = o(n \log{n})$ but we know that $\log{n!} = \Theta(n \log{n})$, thus there is a no bijection $\implies$ there exist a test on which the algorithm $A$ produces a wrong result.
 
 \end{proof}
 
@@ -64,7 +68,7 @@ Notice that this sorting algorithm is based on the counting not comparisons, thu
 
 \Subsection{MergeSort: recursive and iterative solutions}
 
-The main idea is to soft the left part, sort the right part and then merge two sorted parts into a single sorted array via two pointers approach.
+The main idea is to sort the left part, sort the right part and then merge two sorted parts into a single sorted array via two pointers approach.
 
 \Subsubsection{Recursive implementation}
 
@@ -114,7 +118,7 @@ for (int k = 0; (1 << k) < n; ++k) {
     for (int i = 0; i < n; i += 2 * (1 << k)) {
         int m = min(n, i + (1 << k));
         int r = min(n, i + 2 * (1 << k));
-        Merge(i, m, r, a, buffer);
+        Merge(i, m, r, arr, buffer);
     }
     // now buffer has properly sorted chunks of size 2^(k+1),
     // we need arr to store the updated result after each iteration.
@@ -203,7 +207,7 @@ Notice that among the mentioned sorting algorithms no one is able to make a stab
 
 \Subsubsection{Stable CountSort}
 
-Let's take a look at somewhat altered sorting problem: we are given an array of pairs $(a_i,\ b_i)$ of integersm and we need to sort in a \textbf{stable} manner.
+Let's take a look at somewhat altered sorting problem: we are given an array of pairs $(a_i,\ b_i)$ of integers and we need to sort in a \textbf{stable} manner.
 
 \begin{lstlisting}[language=C++]
 int pos[n] = {0};
@@ -249,7 +253,7 @@ Notice that $\forall b$ - the integer system base, any integer in $[0, m)$ is a 
 
 The idea is to place all of the elements $x$ ($\min \leq x \leq \max$) into $n$ buckets. In order to do that the numeric line is splitted into $n$ segments of equal size where the $i$-th segment contains the elements from the following range:
 
-$L := \max - \min + 1$, $[\min + \frac{i}{n}L, \ \min + \frac{(i+1)}{n}L]$
+$L := \max - \min + 1$, $[\min + \frac{i}{n}L, \ \min + \frac{(i+1)}{n}L)$
 
 In this case, each element $x_j$ will be placed into the segment of number $i_j = \lfloor \frac{x_j - \min}{L} \cdot n \rfloor$. The buckets themselves are already sorted, we only need to sort elements inside each bucket. It can be done either by calling the BucketSort recursively or by running any other integer sorting algorithm on each bucket.
 
@@ -281,7 +285,7 @@ void BucketSort(vector<int>& a) { // we update the provided array
 \end{lstlisting}
 
 \begin{lemma}
-    BucketSort works in $O(n \cdot \lceil \log{\max - \min} \rceil)$ of time.
+    BucketSort works in $O(n \cdot \lceil \log{(\max - \min)} \rceil)$ of time.
 \end{lemma}
 
 \begin{proof}

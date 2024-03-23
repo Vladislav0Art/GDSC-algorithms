@@ -1,0 +1,47 @@
+\begin{problem}\textbf{Cycle in Graph}
+
+    Given a graph $g$ of $n$ verticies and $m$ edges. Find any cycle in the given graph and print its verticies.
+\end{problem}
+
+
+\begin{solution}
+
+    The idea is to implement dfs with \textbf{two colors}:
+
+    1. \textit{Color 1} denotes that this vertex was visited but yet not left by the dfs.
+
+    2. \textit{Color 2} denotes that this vertex was left by the dfs.
+
+    The cycle is a situation in the dfs algorithm when it encounters any vertex that has a color $1$. Once such vertex is found the graph has a cycle.
+
+    In order to print its verticies we need to keep track of the visited but yet not left verticies (i.e. verticies of color 1). We can implement it by inserting a currently considered vertex inside an vector and remove it from the vector once all its neighbouring verticies are traversed. Once the cycle is found ending at the vertex $v$ of color $1$, we will go through the elements of this tracking vector until and print its elements until $v$ is found.
+
+    \begin{lstlisting}[language=C++]
+    bool dfs(int v, vector<int>& trace) {
+        if (marked[v] == 2) return false;
+        if (marked[v] == 1) {
+            // found cycle
+            std::cout << v << " ";
+            while(trace.back() != v) {
+                std::cout << trace.back() << " ";
+                trace.pop_back();
+            }
+            return true;
+        }
+
+        marked[v] = 1;
+        trace.push_back(v);
+
+        // traverse neighbouring verticies
+        bool found = false;
+        for (int u : graph[v]) {
+            found = dfs(u);
+            if (found) break;
+        }
+
+        trace.pop_back();
+        return found;
+    }
+    \end{lstlisting}
+
+\end{solution}
